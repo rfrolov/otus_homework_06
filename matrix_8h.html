@@ -68,7 +68,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Файлы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Определения типов</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>Указатель</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Классы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Файлы</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Функции</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -84,8 +84,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Классы</a> &#124;
-<a href="#func-members">Функции</a>  </div>
+<a href="#nested-classes">Классы</a>  </div>
   <div class="headertitle">
 <div class="title">Файл matrix.h</div>  </div>
 </div><!--header-->
@@ -113,123 +112,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Поиск');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Классы</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmatrix__tuple__t.html">matrix_tuple_t&lt; T, U, N &gt;</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmatrix__tuple__t_3_01T_00_01U_00_010_01_4.html">matrix_tuple_t&lt; T, U, 0 &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Хвост рекурсии.  <a href="structmatrix__tuple__t_3_01T_00_01U_00_010_01_4.html#details">Подробнее...</a><br/></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix.html">matrix&lt; T, default_value, N &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmatrix_1_1iterator.html">matrix&lt; T, default_value, N &gt;::iterator</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итератор по элементам матрицы.  <a href="structmatrix_1_1iterator.html#details">Подробнее...</a><br/></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmatrix_1_1iterator.html">matrix&lt; T, default_value, N &gt;::iterator</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Итератор по элементам матрицы.  <a href="classmatrix_1_1iterator.html#details">Подробнее...</a><br/></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
-Функции</h2></td></tr>
-<tr class="memitem:a7a15a6bc16084dc57b4f43c956acbf1e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename U , size_t... Indices&gt; </td></tr>
-<tr class="memitem:a7a15a6bc16084dc57b4f43c956acbf1e"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="matrix_8h.html#a7a15a6bc16084dc57b4f43c956acbf1e">vector_to_tuple_impl</a> (const std::vector&lt; T &gt; &amp;v, const U &amp;value, std::index_sequence&lt; Indices...&gt;)</td></tr>
-<tr class="separator:a7a15a6bc16084dc57b4f43c956acbf1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd7966f299961bb03f979a757703af64"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename T , typename U &gt; </td></tr>
-<tr class="memitem:abd7966f299961bb03f979a757703af64"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="matrix_8h.html#abd7966f299961bb03f979a757703af64">vector_to_tuple</a> (const std::vector&lt; T &gt; &amp;v, const U &amp;value)</td></tr>
-<tr class="separator:abd7966f299961bb03f979a757703af64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Функции</h2>
-<a class="anchor" id="abd7966f299961bb03f979a757703af64"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, typename T , typename U &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto vector_to_tuple </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const U &amp;&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Преобразовать вектор типа T и значение типа U в кортеж. </p>
-<dl class="tparams"><dt>Параметры шаблона</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">N</td><td>Длина вектора. </td></tr>
-    <tr><td class="paramname">T</td><td>Тип вектора. </td></tr>
-    <tr><td class="paramname">U</td><td>Тип значения. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Аргументы</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">v</td><td>Ссылка на вектор. </td></tr>
-    <tr><td class="paramname">value</td><td>Ссылка на значение. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Возвращает</dt><dd>Кортеж склееный из N элементов вектора и значения. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a7a15a6bc16084dc57b4f43c956acbf1e"></a>
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename U , size_t... Indices&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">auto vector_to_tuple_impl </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; T &gt; &amp;&#160;</td>
-          <td class="paramname"><em>v</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const U &amp;&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::index_sequence&lt; Indices...&gt;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Вспомогательная функция для vector_to_tuple. </p>
-<dl class="tparams"><dt>Параметры шаблона</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Тип вектора. </td></tr>
-    <tr><td class="paramname">U</td><td>Тип значения. </td></tr>
-    <tr><td class="paramname">Indices</td><td>Набор индексов от 0...N-1. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Аргументы</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">v</td><td>Ссылка на вектор. </td></tr>
-    <tr><td class="paramname">value</td><td>Ссылка на значение. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Возвращает</dt><dd>Кортеж склееный из N элементов вектора и значения. </dd></dl>
-
-</div>
-</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

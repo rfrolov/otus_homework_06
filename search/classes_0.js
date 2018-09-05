@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['iterator',['iterator',['../structmatrix_1_1iterator.html',1,'matrix']]]
+  ['iterator',['iterator',['../classmatrix_1_1iterator.html',1,'matrix']]]
 ];

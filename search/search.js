@@ -7,11 +7,10 @@
 
 var indexSectionsWithContent =
 {
-  0: "beimostv",
+  0: "beimos",
   1: "im",
   2: "m",
-  3: "beimosv",
-  4: "t"
+  3: "beimos"
 };
 
 var indexSectionNames =
@@ -19,8 +18,7 @@ var indexSectionNames =
   0: "all",
   1: "classes",
   2: "files",
-  3: "functions",
-  4: "typedefs"
+  3: "functions"
 };
 
 function convertToId(search)
