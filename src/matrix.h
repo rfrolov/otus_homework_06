@@ -6,51 +6,6 @@
 #include <map>
 
 /**
- * Вспомогательная функция для vector_to_tuple.
- * @tparam T Тип вектора.
- * @tparam U Тип значения.
- * @tparam Indices Набор индексов от 0...N-1.
- * @param v Ссылка на вектор.
- * @param value Ссылка на значение.
- * @return Кортеж склееный из N элементов вектора и значения.
- */
-template<typename T, typename U, size_t... Indices>
-auto vector_to_tuple_impl(const std::vector<T> &v, const U &value, std::index_sequence<Indices...>) {
-    return std::make_tuple(v[Indices]..., value);
-}
-
-/**
- * Преобразовать вектор типа T и значение типа U в кортеж.
- * @tparam N Длина вектора.
- * @tparam T Тип вектора.
- * @tparam U Тип значения.
- * @param v Ссылка на вектор.
- * @param value Ссылка на значение.
- * @return Кортеж склееный из N элементов вектора и значения.
- */
-template<size_t N, typename T, typename U>
-auto vector_to_tuple(const std::vector<T> &v, const U &value) {
-    assert(v.size() >= N);
-    return vector_to_tuple_impl(v, value, std::make_index_sequence<N>());
-}
-
-/**
- * Тип кортежа из N элементов типа T и одного элемента типа U.
- * @tparam T Тип элементов кортежа.
- * @tparam N Количество элементов.
- */
-template<typename T, typename U, size_t N>
-struct matrix_tuple_t {
-    using type = decltype(std::tuple_cat(std::declval<std::tuple<T>>(), std::declval<typename matrix_tuple_t<T, U, N - 1>::type>()));
-};
-
-/// Хвост рекурсии.
-template<typename T, typename U>
-struct matrix_tuple_t<T, U, 0> {
-    using type = std::tuple<U>;
-};
-
-/**
  * Класс матрицы.
  * @tparam T Тип элемента.
  * @tparam default_value Значение по умолчани.
@@ -58,27 +13,32 @@ struct matrix_tuple_t<T, U, 0> {
  */
 template<typename T, T default_value, size_t N = 2>
 class matrix {
-    /// Тип вектора, в котором хронятся координаты элемента матрицы.
+    static_assert(N > 1, "");
+
     using vector_t          = std::vector<size_t>;
-
-    /// Указатель на вектор, в котором хронятся координаты элемента матрицы.
     using vector_pointer_t  = std::shared_ptr<vector_t>;
-
-
     using map_t             = std::map<vector_t, T>;
     using map_iterator_t    = typename std::map<vector_t, T>::iterator;
     using map_pointer_t     = std::shared_ptr<map_t>;
-    using tuple_t           = typename matrix_tuple_t<size_t, T, N>::type;
 
-    static_assert(N > 1, "");
+    template<size_t... Indices>
+    static auto vector_to_tuple_impl(const vector_t &v, const T &value, std::index_sequence<Indices...>) {
+        return std::make_tuple(v[Indices]..., value);
+    }
+
+    template<size_t Num>
+    static auto vector_to_tuple(const vector_t &v, const T &value) {
+        assert(v.size() >= Num);
+        return vector_to_tuple_impl(v, value, std::make_index_sequence<Num>());
+    }
+
 
     /**
      * Прокси-класс для эмуляции многомерного массива.
      * @tparam Index Уровень вложенности.
      */
-    template<size_t Index>
+    template<size_t Index, typename Fake = void>
     struct Proxy {
-
         /**
          * Конструктор.
          * @param map Указатель на map.
@@ -96,12 +56,29 @@ class matrix {
             return Proxy<Index + 1>{map_, vector_};
         }
 
+    private:
+        vector_pointer_t vector_{};
+        map_pointer_t    map_{};
+        T                default_value_{default_value};
+    };
+
+    /**
+     * Прокси-класс для эмуляции многомерного массива (хвост рекурсии).
+     */
+    template<typename Fake>
+    struct Proxy<N, Fake> {
+        /**
+         * Конструктор.
+         * @param map Указатель на map.
+         * @param vector Вектор индексов.
+         */
+        Proxy(map_pointer_t map, vector_pointer_t vector) : map_{std::move(map)}, vector_{std::move(vector)} {}
+
         /**
          * Реализация оператора &.
          * @return Значение элемента матрицы.
          */
         operator const T &() const {
-            static_assert(Index == N, "");
             auto it = map_->find(*vector_);
             return (it == map_->cend()) ? default_value_ : it->second;
         }
@@ -112,7 +89,6 @@ class matrix {
          * @return Ссылка на элемент матрицы, куда помещено значение.
          */
         T &operator=(const T value) {
-            static_assert(Index == N, "");
             if (value == default_value_) {
                 auto it = map_->erase(*vector_);
                 return default_value_;
@@ -129,9 +105,20 @@ class matrix {
     };
 
 public:
-
     /// Итератор по элементам матрицы.
-    struct iterator : std::iterator<std::forward_iterator_tag, map_iterator_t> {
+    class iterator : std::iterator<std::forward_iterator_tag, map_iterator_t> {
+        template<size_t Num, typename Fake = void>
+        struct iterator_tuple_t {
+            using type = decltype(std::tuple_cat(std::declval<std::tuple<std::size_t>>(), std::declval<typename iterator_tuple_t<Num - 1, Fake>::type>()));
+        };
+
+        template<typename Fake>
+        struct iterator_tuple_t<0, Fake> {
+            using type = std::tuple<T>;
+        };
+
+        using tuple_t = typename iterator_tuple_t<N>::type;
+    public:
         /**
          * Конструктор.
          * @param map Указатель на map.
@@ -153,7 +140,7 @@ public:
          * @return Кортеж состоящий из координат элемента матрицы и его значения.
          */
         tuple_t operator*() {
-            return vector_to_tuple<N, size_t, T>((*it_).first, (*it_).second);
+            return vector_to_tuple<N>((*it_).first, (*it_).second);
         }
 
         /**
