@@ -4,6 +4,7 @@
 #include <memory>
 #include <cassert>
 #include <map>
+#include <utility>
 
 /**
  * Класс матрицы.
@@ -16,7 +17,6 @@ class matrix {
     static_assert(N > 1, "");
 
     using vector_t          = std::vector<size_t>;
-    using vector_pointer_t  = std::shared_ptr<vector_t>;
     using map_t             = std::map<vector_t, T>;
     using map_iterator_t    = typename std::map<vector_t, T>::iterator;
     using map_pointer_t     = std::shared_ptr<map_t>;
@@ -44,7 +44,7 @@ class matrix {
          * @param map Указатель на map.
          * @param vector Вектор индексов.
          */
-        Proxy(map_pointer_t map, vector_pointer_t vector) : map_{std::move(map)}, vector_{std::move(vector)} {}
+        Proxy(map_pointer_t map, const vector_t &vector) : map_{std::move(map)}, vector_{vector} {}
 
         /**
          * Реализация оператора [].
@@ -52,14 +52,14 @@ class matrix {
          * @return Прокси-класс следующей влеженности.
          */
         Proxy<Index + 1> operator[](size_t index) {
-            vector_->emplace_back(index);
+            vector_.emplace_back(index);
             return Proxy<Index + 1>{map_, vector_};
         }
 
     private:
-        vector_pointer_t vector_{};
-        map_pointer_t    map_{};
-        T                default_value_{default_value};
+        vector_t      vector_{};
+        map_pointer_t map_{};
+        T             default_value_{default_value};
     };
 
     /**
@@ -72,14 +72,14 @@ class matrix {
          * @param map Указатель на map.
          * @param vector Вектор индексов.
          */
-        Proxy(map_pointer_t map, vector_pointer_t vector) : map_{std::move(map)}, vector_{std::move(vector)} {}
+        Proxy(map_pointer_t map, const vector_t &vector) : map_{std::move(map)}, vector_{vector} {}
 
         /**
          * Реализация оператора &.
          * @return Значение элемента матрицы.
          */
         operator const T &() const {
-            auto it = map_->find(*vector_);
+            auto it = map_->find(vector_);
             return (it == map_->cend()) ? default_value_ : it->second;
         }
 
@@ -90,18 +90,17 @@ class matrix {
          */
         T &operator=(const T value) {
             if (value == default_value_) {
-                auto it = map_->erase(*vector_);
+                auto it = map_->erase(vector_);
                 return default_value_;
             }
 
-            auto it = map_->emplace(*vector_, value);
-            return it.first->second;
+            return (*map_)[vector_] = value;
         }
 
     private:
-        vector_pointer_t vector_{};
-        map_pointer_t    map_{};
-        T                default_value_{default_value};
+        vector_t      vector_{};
+        map_pointer_t map_{};
+        T             default_value_{default_value};
     };
 
 public:
@@ -167,8 +166,32 @@ public:
 
     /// Конструктор.
     matrix() {
-        map_    = std::make_shared<map_t>();
-        vector_ = std::make_shared<vector_t>();
+        map_ = std::make_shared<map_t>();
+    }
+
+    /// Конструктор копирования.
+    matrix(const matrix &other) {
+        map_ = std::make_shared<map_t>();
+        *map_ = *other.map_;
+    }
+
+    /// Конструктор перемещения.
+    matrix &operator=(matrix &&other) noexcept {
+        map_ = std::move(other.map_);
+        return *this;
+    }
+
+    /// Оператор копирования.
+    matrix &operator=(const matrix &other) {
+        if(this != &other) {
+            *map_ = *other.map_;
+        }
+        return *this;
+    }
+
+    /// Оператор перемещения.
+    matrix(matrix &&other) noexcept {
+        map_ = std::move(other.map_);
     }
 
     /**
@@ -177,9 +200,8 @@ public:
      * @return Прокси-класс для эмуляции многомерного массива.
      */
     Proxy<1> operator[](size_t index) {
-        vector_->clear();
-        vector_->emplace_back(index);
-        return Proxy<1>{map_, vector_};
+        vector_t vector{index};
+        return Proxy<1>{map_, vector};
     }
 
     /**
@@ -188,9 +210,8 @@ public:
      * @return Прокси-класс для эмуляции многомерного массива.
      */
     const Proxy<1> operator[](size_t index) const {
-        vector_->clear();
-        vector_->emplace_back(index);
-        return Proxy<1>{map_, vector_};
+        vector_t vector{index};
+        return Proxy<1>{map_, vector};
     }
 
     /**
@@ -208,6 +229,5 @@ public:
     iterator end() { return iterator(map_, map_->end()); }
 
 private:
-    map_pointer_t    map_{};
-    vector_pointer_t vector_{};
+    map_pointer_t map_{};
 };
